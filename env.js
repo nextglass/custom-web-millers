@@ -1,3 +1,4 @@
 module.exports = {
-  API_KEY: 'change'
+  API_KEY: 'api-key',
+  EMAIL: 'change-me'
 }

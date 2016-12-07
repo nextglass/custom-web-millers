@@ -1,7 +1,9 @@
-<div class="{{styles.menu}}">
-  <ul>
-    {{#each menus}}
-      <li>{{this}}</li>
+<div class="u__menu">
+  {{#each menus.edges as |menu|}}
+    <div class="u__title">{{menu.node.name}}</div>
+
+    {{#each menu.node.sections.edges as |section|}}
+      {{> section section=section.node}}
     {{/each}}
-  </ul>
+  {{/each}}
 </div>

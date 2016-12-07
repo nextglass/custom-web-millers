@@ -1,4 +1,63 @@
+$background: #fff;
+$base: #000;
+
 .menu {
-  padding: 1rem;
-  background: lightgray;
+  background: $background;
+  /*font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;*/
+  font-family: sans-serif;
+  font-size: 16px;
+
+  .title {
+    padding: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    background: color($background blackness(7%));
+    font-size: 1.8em;
+    text-transform: uppercase;
+
+    &:not(:first-child) {
+      margin-top: 3rem;
+    }
+  }
+
+  color: color($base lightness(25%));
+}
+
+.section {
+  margin-top: 1.5rem;
+
+  .name {
+    text-transform: uppercase;
+    font-size: 2em;
+    margin-bottom: 2rem;
+    font-weight: bold;
+  }
+}
+
+.container {
+  lost-center: 90em;
+}
+
+.items {
+  lost-utility: clearfix;
+}
+
+.item {
+  lost-column: 1/3;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid color($background blackness(10%));
+
+  .info {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .beer-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1.3em;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
 }
