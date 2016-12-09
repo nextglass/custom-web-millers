@@ -5,4 +5,8 @@
   <div class="u__info">
     {{item.style}}, {{item.brewery_location}}
   </div>
+
+  {{#each item.containers.edges as |container|}}
+    {{> container container=container.node}}
+  {{/each}}
 </div>

@@ -56,7 +56,10 @@ const query = `
                         containers {
                           edges {
                             node {
-                              id
+                              price
+                              container_size {
+                                name
+                              }
                             }
                           }
                         }
