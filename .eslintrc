@@ -7,6 +7,15 @@
   "rules": {
     "semi": [2, "never"],
     "prefer-arrow-callback": 0,
-    "comma-dangle": 0
+    "comma-dangle": 0,
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          "./webpack.config.js",
+          "./postcss.config.js"
+        ]
+      }
+    ]
   }
 }

@@ -1,38 +1,36 @@
 import './css/main.css'
 import menusTemplate from './templates/menus.hbs'
-import './templates/section.hbs'
-import './templates/item.hbs'
 
 function insertAfter(referenceNode, newNode) {
   referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling)
 }
 
-function postRequest(query, callback) {
-
+function postRequest(query, locationId, callback) {
   const auth = btoa(`${process.env.EMAIL}:${process.env.API_KEY}`)
 
   // Could use fetch here if supporting newer browsers
   const xhr = new XMLHttpRequest()
   xhr.responseType = 'json'
-  xhr.open('POST', 'http://localhost:3000/graphql')
+  xhr.open('POST', 'https://business.untappd.com/graphql')
   xhr.setRequestHeader('content-type', 'application/json')
   xhr.setRequestHeader('accept', 'application/json')
   xhr.setRequestHeader('authorization', `Basic ${auth}`)
 
-  xhr.onload = () => {
-    return callback(xhr)
-  }
+  xhr.onload = () => callback(xhr)
 
   xhr.send(JSON.stringify({
-    query
+    query,
+    variables: {
+      locationId: parseInt(locationId, 10)
+    }
   }))
 }
 
 const query = `
-  {
-    location(id: 7) {
+  query ($locationId: Int!) {
+    location(id: $locationId) {
       id
-      menus {
+      menus(unpublished: false) {
         edges {
           node {
             id
@@ -76,18 +74,23 @@ const query = `
   }
 `
 
-postRequest(query, (xhr) => {
+const scripts = document.getElementsByTagName('script')
+let scriptTag = scripts[scripts.length - 1]
+
+if (!scriptTag) {
+  scriptTag = document.getElementById('menu-loader')
+}
+
+const locationId = scriptTag.dataset.locationId
+
+const div = document.createElement('div')
+div.innerHTML = '<h3>Loading...</h3>'
+insertAfter(scriptTag, div)
+
+postRequest(query, locationId, (xhr) => {
   const menus = xhr.response.data.location.menus
-  const div = document.createElement('div')
 
   div.innerHTML = menusTemplate({ menus })
-
-  const scripts = document.getElementsByTagName('script')
-  let scriptTag = scripts[scripts.length - 1]
-
-  if (!scriptTag) {
-    scriptTag = document.getElementById('menu-loader')
-  }
 
   insertAfter(scriptTag, div)
 })

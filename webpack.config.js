@@ -1,11 +1,9 @@
+require('dotenv').config()
+
 const path = require('path')
 const webpack = require('webpack')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const WebpackBuildNotifierPlugin = require('webpack-build-notifier')
-
-const env = require('./env')
-
-Object.assign(process.env, env)
 
 module.exports = {
   entry: {
