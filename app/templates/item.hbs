@@ -1,12 +1,14 @@
 <div class="u__item">
-  <div class="u__beer-name">
-    {{item.brewery}} {{item.name}}
+  <div class="u__row">
+    <div class="u__beer-name {{#unless item.containers.edges.length}} u__no-container {{/unless}}">
+      {{item.brewery}} {{item.name}}
+    </div>
+    <div class="u__container-info">
+      {{item.containers.edges.0.node.price}}
+    </div>
   </div>
+
   <div class="u__info">
     {{item.style}}, {{item.brewery_location}}
   </div>
-
-  {{#each item.containers.edges as |container|}}
-    {{> container container=container.node}}
-  {{/each}}
 </div>

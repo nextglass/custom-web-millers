@@ -1,9 +1,7 @@
 import './css/main.css'
 import menusTemplate from './templates/menus.hbs'
-
-function insertAfter(referenceNode, newNode) {
-  referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling)
-}
+import delegate from './src/delegate'
+import insertAfter from './src/insert-after'
 
 function postRequest(query, locationId, callback) {
   const auth = btoa(`${process.env.EMAIL}:${process.env.API_KEY}`)
@@ -84,7 +82,7 @@ if (!scriptTag) {
 const locationId = scriptTag.dataset.locationId
 
 const div = document.createElement('div')
-div.innerHTML = '<h3>Loading...</h3>'
+div.innerHTML = '<div class="u__center"><div>Loading...</div></div>'
 insertAfter(scriptTag, div)
 
 postRequest(query, locationId, (xhr) => {
@@ -93,4 +91,34 @@ postRequest(query, locationId, (xhr) => {
   div.innerHTML = menusTemplate({ menus })
 
   insertAfter(scriptTag, div)
+
+  setupScroll()
 })
+
+function setupScroll() {
+  const scrollEl = '[data-behavior="u__scroll"]'
+  const onTap = document.querySelector('.u__on-tap')
+
+  let fn = null
+
+  delegate(document, 'mousedown', scrollEl, (event) => {
+    event.preventDefault()
+
+    if (event.button === 2) { return }
+    const direction = event.target.dataset.direction
+
+    const speed = direction === 'down' ? 7 : -7
+
+    function update() {
+      onTap.scrollTop += speed
+      fn = requestAnimationFrame(update)
+    }
+
+    update()
+  })
+
+  delegate(document, 'mouseup', scrollEl, (event) => {
+    event.preventDefault()
+    cancelAnimationFrame(fn)
+  })
+}

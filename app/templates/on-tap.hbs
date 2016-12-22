@@ -1,0 +1,8 @@
+{{#each section.items.edges as |item|}}
+  <section>
+    <div class="u__name">
+      {{item.node.name}}
+    </div>
+    <div class="u__info">{{item.node.brewery_location}}, {{item.node.style}}</div>
+  </section>
+{{/each}}

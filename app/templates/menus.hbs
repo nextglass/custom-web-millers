@@ -1,9 +1,24 @@
-<div class="u__menu">
+<section class="u__menu">
   {{#each menus.edges as |menu|}}
-    <div class="u__title">{{menu.node.name}}</div>
+    {{#ifeq menu.node.name 'Draft Beer Menu' }}
+      <div class="u__on-tap">
+        <div class="u__items">
+          {{#each menu.node.sections.edges as |section|}}
+            {{> on-tap section=section.node}}
+          {{/each}}
+        </div>
+      </div>
 
-    {{#each menu.node.sections.edges as |section|}}
-      {{> section section=section.node}}
-    {{/each}}
+      <section class="u__on-tap-controls">
+        <button class="u__up" data-behavior="u__scroll" data-direction="up"></button>
+        <button class="u__down" data-behavior="u__scroll" data-direction="down"></button>
+      </section>
+    {{else}}
+
+      {{#each menu.node.sections.edges as |section|}}
+        {{> section section=section.node}}
+      {{/each}}
+
+    {{/ifeq}}
   {{/each}}
-</div>
+</section>
