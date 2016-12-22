@@ -8,7 +8,6 @@ function postRequest(query, locationId, callback) {
 
   // Could use fetch here if supporting newer browsers
   const xhr = new XMLHttpRequest()
-  xhr.responseType = 'json'
   xhr.open('POST', 'https://business.untappd.com/graphql')
   xhr.setRequestHeader('content-type', 'application/json')
   xhr.setRequestHeader('accept', 'application/json')
@@ -48,6 +47,8 @@ const query = `
                         brewery
                         rating
                         style
+                        ibu
+                        abv
                         brewery_location
                         containers {
                           edges {
@@ -79,14 +80,15 @@ if (!scriptTag) {
   scriptTag = document.getElementById('menu-loader')
 }
 
-const locationId = scriptTag.dataset.locationId
+const locationId = scriptTag.getAttribute('data-location-id')
 
 const div = document.createElement('div')
 div.innerHTML = '<div class="u__center"><div>Loading...</div></div>'
 insertAfter(scriptTag, div)
 
 postRequest(query, locationId, (xhr) => {
-  const menus = xhr.response.data.location.menus
+  const response = JSON.parse(xhr.response)
+  const menus = response.data.location.menus
 
   div.innerHTML = menusTemplate({ menus })
 
@@ -105,7 +107,7 @@ function setupScroll() {
     event.preventDefault()
 
     if (event.button === 2) { return }
-    const direction = event.target.dataset.direction
+    const direction = event.target.getAttribute('data-direction')
 
     const speed = direction === 'down' ? 7 : -7
 
@@ -117,7 +119,7 @@ function setupScroll() {
     update()
   })
 
-  delegate(document, 'mouseup', scrollEl, (event) => {
+  document.addEventListener('mouseup', (event) => {
     event.preventDefault()
     cancelAnimationFrame(fn)
   })

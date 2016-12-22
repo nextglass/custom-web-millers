@@ -18,7 +18,8 @@ module.exports = {
         fontFamily: '"Titillium Web", sans-serif',
         fontWeight: 'normal',
         fontSize: '1em',
-        '-webkit-font-smoothing': 'antialiased'
+        '-webkit-font-smoothing': 'antialiased',
+        '-moz-osx-font-smoothing': 'grayscale'
       }
     })
   ]

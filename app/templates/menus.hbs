@@ -1,6 +1,9 @@
 <section class="u__menu">
   {{#each menus.edges as |menu|}}
-    {{#ifeq menu.node.name 'Draft Beer Menu' }}
+    {{#ifeq menu.node.name "What's On Tap" }}
+      <div class="u__container">
+        <div class="u__on-tap-title"> What's on tap</div>
+      </div>
       <div class="u__on-tap">
         <div class="u__items">
           {{#each menu.node.sections.edges as |section|}}
