@@ -1,5 +1,5 @@
 export default function delegate(el, evt, sel, handler) {
-  el.addEventListener(evt, function (event) {
+  el.addEventListener(evt, function on(event) {
     let t = event.target
     while (t && t !== this) {
       if (t.matches(sel)) {
