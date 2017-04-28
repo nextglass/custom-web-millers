@@ -71,7 +71,7 @@ $red: #6e1e1f;
     }
 
     .container {
-      float: left;
+      float: right;
       margin-right: 1rem;
       text-align: center;
       color: $black;
