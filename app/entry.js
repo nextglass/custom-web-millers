@@ -1,77 +1,32 @@
+import map from 'async/map'
+
 import './css/main.css'
 import menusTemplate from './templates/menus.hbs'
 import delegate from './src/delegate'
 import insertAfter from './src/insert-after'
 
-function postRequest(query, locationId, callback) {
+function xhrRequest(url, callback) {
   const auth = btoa(`${process.env.EMAIL}:${process.env.API_KEY}`)
+  const xhr = new XMLHttpRequest()
 
   // Could use fetch here if supporting newer browsers
-  const xhr = new XMLHttpRequest()
-  xhr.open('POST', 'https://business.untappd.com/graphql')
+
+  xhr.open('GET', url)
   xhr.setRequestHeader('content-type', 'application/json')
   xhr.setRequestHeader('accept', 'application/json')
   xhr.setRequestHeader('authorization', `Basic ${auth}`)
-
-  xhr.onload = () => callback(xhr)
-
-  xhr.send(JSON.stringify({
-    query,
-    variables: {
-      locationId: parseInt(locationId, 10)
-    }
-  }))
+  xhr.onload = () => callback(null, JSON.parse(xhr.response))
+  xhr.send()
 }
 
-const query = `
-  query ($locationId: Int!) {
-    location(id: $locationId) {
-      id
-      menus(unpublished: false) {
-        edges {
-          node {
-            id
-            name
-            sections {
-              edges {
-                node {
-                  id
-                  name
-                  description
-                  items {
-                    edges {
-                      node {
-                        id
-                        label_image
-                        name
-                        brewery
-                        rating
-                        style
-                        ibu
-                        abv
-                        brewery_location
-                        containers {
-                          edges {
-                            node {
-                              price
-                              container_size {
-                                name
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`
+function getMenus(locationId, callback) {
+  xhrRequest(`https://business.untappd.com/api/v1/locations/${locationId}/menus`, callback)
+}
+
+function getEachMenu(menuId, callback) {
+  xhrRequest(`https://business.untappd.com/api/v1/menus/${menuId}?full=true`, callback)
+}
+
 
 const scripts = document.getElementsByTagName('script')
 let scriptTag = scripts[scripts.length - 1]
@@ -85,17 +40,6 @@ const locationId = scriptTag.getAttribute('data-location-id')
 const div = document.createElement('div')
 div.innerHTML = '<div class="u__center"><div>Loading...</div></div>'
 insertAfter(scriptTag, div)
-
-postRequest(query, locationId, (xhr) => {
-  const response = JSON.parse(xhr.response)
-  const menus = response.data.location.menus
-
-  div.innerHTML = menusTemplate({ menus })
-
-  insertAfter(scriptTag, div)
-
-  setupScroll()
-})
 
 function setupScroll() {
   const scrollEl = '[data-behavior="u__scroll"]'
@@ -124,3 +68,16 @@ function setupScroll() {
     cancelAnimationFrame(fn)
   })
 }
+
+getMenus(locationId, (err, response) => {
+  const menus = response.menus
+  const menuIds = menus.map(menu => menu.id)
+
+  map(menuIds, getEachMenu, (err, results) => {
+    const menusAll = results.map(res => res.menu)
+
+    div.innerHTML = menusTemplate({ menus: menusAll })
+    insertAfter(scriptTag, div)
+    setupScroll()
+  })
+})

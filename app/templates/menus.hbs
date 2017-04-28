@@ -1,13 +1,13 @@
 <section class="u__menu">
-  {{#each menus.edges as |menu|}}
-    {{#ifeq menu.node.name "What's On Tap" }}
+  {{#each menus as |menu|}}
+    {{#ifeq menu.name "What's On Tap" }}
       <div class="u__container">
         <div class="u__on-tap-title"> What's on tap</div>
       </div>
       <div class="u__on-tap">
         <div class="u__items">
-          {{#each menu.node.sections.edges as |section|}}
-            {{> on-tap section=section.node}}
+          {{#each menu.sections as |section|}}
+            {{> on-tap section=section}}
           {{/each}}
         </div>
       </div>
@@ -18,8 +18,8 @@
       </section>
     {{else}}
 
-      {{#each menu.node.sections.edges as |section|}}
-        {{> section section=section.node}}
+      {{#each menu.sections as |section|}}
+        {{> section section=section}}
       {{/each}}
 
     {{/ifeq}}

@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "webpack-dev-server --inline --hot --content-base build/",
+    "dev": "webpack-dev-server --inline --hot",
     "build": "NODE_ENV=production webpack --optimize-occurrence-order --optimize-dedupe"
   },
   "devDependencies": {
@@ -22,6 +22,7 @@
     "eslint-plugin-import": "^2.2.0",
     "handlebars": "^4.0.6",
     "handlebars-loader": "^1.4.0",
+    "html-webpack-plugin": "^2.28.0",
     "json-loader": "^0.5.4",
     "lost": "^7.1.1",
     "postcss-autoreset": "^1.2.1",
@@ -35,5 +36,7 @@
     "webpack-build-notifier": "^0.1.13",
     "webpack-dev-server": "^1.16.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "async": "^2.3.0"
+  }
 }

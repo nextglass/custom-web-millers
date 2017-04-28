@@ -1,8 +1,8 @@
 <div class="u__title">{{section.name}}</div>
 <div class="u__container u__section">
   <div class="u__items">
-    {{#each section.items.edges as |item|}}
-      {{> item item=item.node}}
+    {{#each section.items as |item|}}
+      {{> item item=item}}
     {{/each}}
   </div>
 </div>

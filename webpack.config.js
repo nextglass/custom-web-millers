@@ -5,6 +5,7 @@ const webpack = require('webpack')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const WebpackBuildNotifierPlugin = require('webpack-build-notifier')
 const CompressionPlugin = require('compression-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const plugins = [
   new WebpackBuildNotifierPlugin({
@@ -12,11 +13,10 @@ const plugins = [
     suppressSuccess: true
   }),
 
-  new CleanWebpackPlugin(['build'], {
-    root: process.cwd(),
-    verbose: true,
-    dry: false,
-    exclude: ['bundle.js', 'index.html']
+  new HtmlWebpackPlugin({
+    locationId: process.env.LOCATION_ID,
+    inject: false,
+    template: 'template.ejs'
   }),
 
   new webpack.DefinePlugin({
@@ -64,7 +64,7 @@ module.exports = {
 
   output: {
     path: path.resolve(__dirname, 'build'),
-    publicPath: '/assets/',
+    publicPath: '/',
     filename: process.env.NODE_ENV === 'production' ? 'menu.[hash].min.js' : 'bundle.js'
   },
 
@@ -92,7 +92,7 @@ module.exports = {
         test: /\.hbs$/,
         loader: 'handlebars-loader',
         query: {
-          helperDirs: [__dirname + '/app/helpers']
+          helperDirs: [path.join(__dirname, '/app/helpers')]
         }
       }
     ]

@@ -1,24 +1,24 @@
-{{#each section.items.edges as |item|}}
+{{#each section.items as |item|}}
   <section>
     <div class="u__left">
       <div class="u__name">
-        {{item.node.name}}
+        {{item.name}}
       </div>
       <div class="u__info">
-        <span>{{item.node.brewery_location}}</span>
-        <span>{{item.node.abv}}%</span>
-        <span>{{item.node.style}}</span>
-        <span>{{item.node.ibu}} IBU</span>
+        <span>{{item.brewery_location}}</span>
+        <span>{{item.abv}}%</span>
+        <span>{{item.style}}</span>
+        <span>{{item.ibu}} IBU</span>
       </div>
     </div>
     <div class="u__right">
-      {{#each item.node.containers.edges as |container|}}
+      {{#each item.containers as |container|}}
         <div class="u__container">
           <div class="u__container-name">
-            {{container.node.container_size.name}}
+            {{container.container_size.name}}
           </div>
           <div class="u__container-price">
-            ${{container.node.price}}
+            ${{container.price}}
           </div>
         </div>
       {{/each}}
