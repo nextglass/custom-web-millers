@@ -8,6 +8,8 @@ Then run yarn in menu starter directory
 yarn
 ```
 
+** The menu name must be "Craft Beer Menu" to display in the desired template ***
+
 # ENV
 Change the .env to match your email and api key
 
